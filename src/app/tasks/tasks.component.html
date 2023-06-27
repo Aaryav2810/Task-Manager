@@ -1,0 +1,204 @@
+<div>
+    <button class="btn bg-info rounded-circle text-white m-4" data-toggle="modal" data-target="#exampleModal">
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
+  
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">New ToDo Task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="newTaskForm">
+            <input required type="text" formControlName="name" placeholder="Title" class="mt-3 form-control">
+            <small 
+            *ngIf="!newTaskForm.get('name').valid && newTaskForm.get('name').touched" 
+            class="text-danger">*Please add task Title
+          </small>
+            <input required type="text" formControlName="desc" placeholder="Description" class="mt-3 form-control">
+            <small 
+            *ngIf="!newTaskForm.get('desc').valid && newTaskForm.get('desc').touched" 
+            class="text-danger">*Please add task Description
+          </small>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" 
+          data-dismiss="modal"
+          [disabled]="!newTaskForm.valid" 
+          class="btn btn-info" 
+          (click)="addTask()" 
+          >Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container d-md-flex flex-column-md">
+    <div class="row">
+      <div class="col-md m-2">
+        <div
+          class="list"
+          cdkDropList
+          #todolist="cdkDropList"
+          [cdkDropListData]="todo"
+          [cdkDropListConnectedTo]="[rejectedlist, doinglist, donelist, todolist]"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <nav class="navbar navbar-light bg-light border-bottom">
+            <div>ToDo</div>
+            <div>{{ todo.length }}</div>
+          </nav>
+  
+          <mat-card cdkDrag *ngFor="let item of todo">
+            <div>
+              <div class="delete p-1 float-right" (click)="deleteTask(item.date, 'todo')">
+                <span><i class="fa fa-trash"></i></span>
+              </div>
+  
+              <mat-card-title
+                ><p class="text-primary">Task Name:</p>
+                {{ item?.name }}</mat-card-title
+              ><hr>
+              <mat-card-subtitle
+                ><p class="text-primary">Task Description:</p>
+                {{ item?.desc }}</mat-card-subtitle
+              >
+            </div><hr>
+            <div class="text-muted display-5 font-weight-light">
+              Created Date:
+              {{ item?.date | date:"medium":"medium" }}
+            </div>
+          </mat-card>
+  
+          <div class="alert alert-info m-3" *ngIf="todo.length === 0">
+            No Pending tasks to do..!!
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md m-2">
+        <div
+          class="list"
+          cdkDropList
+          #doinglist="cdkDropList"
+          [cdkDropListData]="doing"
+          [cdkDropListConnectedTo]="[rejectedlist, doinglist, donelist, todolist]"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <nav class="navbar navbar-light bg-light border-bottom">
+            <div>Doing</div>
+            <div>{{ doing.length }}</div>
+          </nav>
+  
+          <mat-card cdkDrag *ngFor="let item of doing">
+            <div>
+              <div class="delete p-1 float-right" (click)="deleteTask(item.date, 'doing')">
+                <span><i class="fa fa-trash"></i></span>
+              </div>
+              <mat-card-title
+                ><p class="text-primary">Task Name:</p>
+                {{ item.name }}</mat-card-title
+              ><hr>
+              <mat-card-subtitle
+                ><p class="text-primary">Task Description:</p>
+                {{ item.desc }}</mat-card-subtitle
+              >
+            </div><hr>
+            <div class="text-muted display-5 font-weight-light">
+              Created Date:
+              {{ item?.date | date:"medium" }}
+            </div>
+          </mat-card>
+          <div class="alert alert-info m-3" *ngIf="doing.length === 0">
+            No Pending tasks in progress..!!
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md m-2">
+        <div
+          class="list"
+          cdkDropList
+          #donelist="cdkDropList"
+          [cdkDropListData]="done"
+          [cdkDropListConnectedTo]="[rejectedlist, doinglist, donelist, todolist]"
+          (cdkDropListDropped)="drop($event)"
+        >
+        <nav class="navbar navbar-light bg-light border-bottom">
+          <div>Done</div>
+          <div>{{ done.length }}</div>
+        </nav> 
+  
+          <mat-card cdkDrag *ngFor="let item of done">
+            <div>
+              <div class="delete p-1 float-right" (click)="deleteTask(item.date, 'done')">
+                <span><i class="fa fa-trash"></i></span>
+              </div>
+              <mat-card-title
+                ><p class="text-primary">Task Name:</p>
+                {{ item.name }}</mat-card-title
+              ><hr>
+              <mat-card-subtitle
+                ><p class="text-primary">Task Description:</p>
+                {{ item.desc }}</mat-card-subtitle
+              >
+            </div><hr>
+            <div class="text-muted display-5 font-weight-light">
+              Created Date:
+              {{ item?.date | date:"medium"}}
+            </div>
+          </mat-card>
+          <div class="alert alert-info m-3" *ngIf="done.length === 0">
+            You have completed all the tasks..!!
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md m-2">
+        <div
+          class="list"
+          cdkDropList
+          #rejectedlist="cdkDropList"
+          [cdkDropListData]="rejected"
+          [cdkDropListConnectedTo]="[rejectedlist, doinglist, donelist, todolist]"
+          (cdkDropListDropped)="drop($event)"
+        >
+  
+        <nav class="navbar navbar-light bg-light border-bottom">
+          <div>Rejected</div>
+          <div>{{ rejected.length }}</div>
+        </nav> 
+  
+          <mat-card cdkDrag *ngFor="let item of rejected">
+            <div>
+              <div class="delete p-1 float-right" (click)="deleteTask(item.date, 'rejected')">
+                <span><i class="fa fa-trash"></i></span>
+              </div>
+              <mat-card-title
+                ><p class="text-primary">Task Name:</p>
+                {{ item.name }}</mat-card-title
+              ><hr>
+              <mat-card-subtitle
+                ><p class="text-primary">Task Description:</p>
+                {{ item.desc }}</mat-card-subtitle
+              >
+            </div><hr>
+            <div class="text-muted display-5 font-weight-light">
+              Created Date:
+              {{ item?.date | date:"medium"}}
+            </div>
+          </mat-card>
+          <div class="alert alert-info m-3" *ngIf="rejected.length === 0">
+            No tasks rejected..!!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

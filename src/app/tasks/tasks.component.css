@@ -1,0 +1,76 @@
+
+mat-card {
+    background-color: white;
+    margin: 1em;
+    cursor: pointer;
+    border: 2px solid lightgrey;
+  }
+  
+  .cards {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5%;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .delete {
+    color: red;
+    border-radius: 7px;
+    border: 1px solid rgb(255, 207, 207);
+  }
+  
+  .list-container {
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 2em;
+    display: flex;
+  }
+  
+  .column-container {
+    width: 250px;
+    max-width: 100%;
+    margin: 0 25px 25px 0;
+    display: inline-block;
+    vertical-align: top;
+  }
+  
+  .list {
+    border: 1px solid lightblue;
+  }
+  
+  
+  
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+      0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .example-box:last-child {
+    border: none;
+  }
+  
+  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  a {
+    text-decoration: none;
+    color: dodgerblue;
+  }
+  
